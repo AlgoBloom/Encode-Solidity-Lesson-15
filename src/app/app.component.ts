@@ -10,17 +10,22 @@ export class AppComponent {
   // number that starts at 0
   blockNumber: number | string | undefined;
   provider: ethers.providers.BaseProvider;
+  transactions: string[] | undefined;
   // constructor function
   constructor() {
-    this.blockNumber = "Loading...";
     this.provider = ethers.getDefaultProvider('goerli');
-    // here we are listenting to the promise and when it is completed then receiving the block object
-    this.provider.getBlock('latest').then((block) => {
-      this.blockNumber = block.number;
-    });
   }
 
   syncBlock() {
+    // here we are listenting to the promise and when it is completed then receiving the block object
+    this.blockNumber = "loading...";
+    this.provider.getBlock('latest').then((block) => {
+      this.blockNumber = block.number;
+      this.transactions = block.transactions;
+    });
+  }
 
+  clearBlock() {
+    this.blockNumber = 0;
   }
 }
